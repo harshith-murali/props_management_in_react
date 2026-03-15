@@ -3,10 +3,10 @@ import BasicProps from "./components/BasicProps.jsx";
 import ChildrenProps from "./components/ChildrenProps.jsx";
 import ComplexProps from "./components/ComplexProps.jsx";
 import RefProps from "./components/RefProps.jsx";
-import ThemeToggler from "./components/ThemeToggler.jsx";
+import ThemeToggler, { ThemeProvider, useTheme } from "./components/ThemeToggler.jsx";
 
 function Navigation() {
-  const isDark = true;
+  const { isDark } = useTheme();
 
   const sections = [
     { id: "basic", label: "Basic Props", icon: "📦" },
@@ -37,17 +37,18 @@ function Navigation() {
 }
 
 function AppContent() {
+  const { isDark } = useTheme();
+
   return (
-    <div className="min-h-screen bg-gray-800 text-white flex flex-col">
+    <div className={`min-h-screen ${isDark ? "bg-gray-900 text-white" : "bg-blue-300 text-gray-900"}`}>
       <Navigation />
 
       <main className="flex-1">
         <div className="max-w-5xl mx-auto px-6 py-12">
           <header className="text-center mb-12">
             <h1 className="text-4xl font-bold mb-4">React Props Explained</h1>
-            <p className="text-gray-300 text-lg">
-              Explore different types of props in React with examples and
-              explanations.
+            <p className="text-lg">
+              Explore different types of props in React with examples and explanations.
             </p>
           </header>
 
@@ -94,7 +95,11 @@ function AppContent() {
 }
 
 function App() {
-  return <AppContent />;
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
+  );
 }
 
 export default App;
